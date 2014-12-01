@@ -23,6 +23,7 @@ import foo.element.smal.MetaDataEvidenceCopyRightDesc;
 import foo.element.smal.MetaDataRelationEvidenceItem;
 import foo.element.smal.MetaDataRelationFile;
 import foo.element.smal.MetaDataRelationKnowledge;
+import foo.function.FileOperation;
 import foo.model.MetaData;
 import foo.model.MetaDataForCase;
 import foo.model.MetaDataForDisease;
@@ -41,8 +42,9 @@ public class DOMXml {
 	private File filexml = new File("E:\\BaiduYunDownload\\work2\\疾病标准样例.xml");
 	private List<String> listfile=new ArrayList<String>();
 	private List<MetaData> MetaDatas=new ArrayList();
+	private String absoulute ="E:\\BaiduYunDownload\\work2\\demo"; 
 	
-	Document document;
+
 
 	
 	
@@ -53,60 +55,111 @@ public class DOMXml {
 	
 	public static void main(String[] args) {
 		DOMXml domxml = new DOMXml();
-		domxml.create();
+		List<MetaData> listMetaData=new ArrayList<MetaData>();
+		String pathDirectory="E:\\BaiduYunDownload\\work2\\demo";
+		listMetaData =domxml.processXML(pathDirectory);
+		for(MetaData meta:listMetaData){
+			List<String> listString=domxml.getFilePath(meta);
+			FileOperation fileOperation=new FileOperation();
+			if(meta.getHeader().getMetaDataID().equals("am_disease")){
+				MetaDataForDisease me=(MetaDataForDisease) meta;
+				fileOperation.pastFile(listString,me.getDisease().getTitle()+me.getHeader().getIdentifier(), "F:\\");
+			}
+			
+		}
 
 	}
 	
 	
-	public void create(){
-		initial();
-		readDataFromXml();
-
+	
+	public List<MetaData> processXML(String pathDirectory){
+		List<MetaData> listMetaData2=new ArrayList<MetaData>();
+		FileOperation fileOperation=new FileOperation();
+		String flge=".xml";
+		List<String> listfile=fileOperation.getFiles(pathDirectory, flge);
+		for(String str:listfile){
+			MetaData metadata=initial(str);	
+			listMetaData2.add(metadata);			
+		}
+		return listMetaData2;
+		
+	}
+	
+	
+	private List<String> getFilePath(MetaData metadata){
+		List<MetaDataRelationFile> filePaths=metadata.getRelation().getFile();
+		List<String> listString=new ArrayList<String>();
+		for(MetaDataRelationFile f:filePaths){
+			listString.add(absoulute+"\\"+f.getFileName());
+		}
+		return listString; 
+		
+		
 	}
 
-	private void initial() {
+	private MetaData initial(String xmlpath) {
 		SAXReader reader = new SAXReader();
+		MetaData metadata = null;
 		try {
-			document = reader.read(filexml);
+			Document document = reader.read(new File(xmlpath));
+			Element root = document.getRootElement();
+			
+				metadata=createCase(root);
+		
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-	public void readDataFromXml() {
-		Element root = document.getRootElement();
-
-		try {
-			createCase(root);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return metadata;
 	}
 
-	private MetaDataForCase createCase(Element root) throws Exception {
+	private MetaData createCase(Element root) throws Exception {
 		List<Element> nodes = root.elements();
 
-		MetaDataForDisease disease = new MetaDataForDisease();
+		MetaData metadata = null;
+		MetaDataHeader mdh = null;
+		MetaDataForAll metaDataForall = null;
+		MetaDataRelations relation = null;
+		MetaDataAdminMD adminMD = null;
 		String type = null;
 		for (Element child : nodes) {
 			if (child.getName().equals(HEADER)) {
-				MetaDataHeader mdh = addXMLHeader(child);
+				 mdh = addXMLHeader(child);
 				System.out.println(mdh.getMetaDataID());
 				type = mdh.getMetaDataID();
 			} else if (child.getName().equals(METADATA)) {
 				if (type.equals("am_disease")) {
-					MetaDataDisease metaDisease = new MetaDataDisease();
-					addXMLMetaDaraForAll(metaDisease,child);
-					addXMLMetaDataDisease(metaDisease,child);
+					metadata = new MetaDataForDisease();
+					metaDataForall = new MetaDataDisease();
+					addXMLMetaDaraForAll(metaDataForall,child);
+					addXMLMetaDataDisease((MetaDataDisease)metaDataForall,child);
+				}
+				else if(child.getName().equals("am_case")){
+					metadata =new MetaDataForDisease();
+					
 				}
 			} else if (child.getName().equals(REALATIONS)) {
-				addXMLRelation(child);
+				relation=addXMLRelation(child);
 			} else if (child.getName().equals(ADMINMD)) {
-				addXMLAdminMD(child);
+				adminMD=addXMLAdminMD(child);
 			}
 			System.out.println(child.getName());
 		}
+		if(type.equals("am_disease")){
+			MetaDataForDisease disease=(MetaDataForDisease)metadata;
+			disease.setAdminMD(adminMD);
+			disease.setDisease((MetaDataDisease)metaDataForall);
+			disease.setHeader(mdh);
+			disease.setRelation(relation);
+			return disease;
+		}
+		else if(type.equals("am_case")){
+			
+		}
+
 		return null;
 	}
 

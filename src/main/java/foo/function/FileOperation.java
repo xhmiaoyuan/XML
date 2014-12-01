@@ -19,7 +19,7 @@ public class FileOperation {
 		
 		for(String filep:fileList){
 			String originFile=filep;
-			String goalFile=Goal+'\\'+letter1+'\\'+letter2+'\\'+nameIdentifier+'\\'+filep.substring(filep.lastIndexOf("\\"),filep.length()-1);
+			String goalFile=Goal+'\\'+letter1+'\\'+letter2+'\\'+nameIdentifier+'\\'+filep.substring(filep.lastIndexOf("\\"),filep.length());
 			File goalFileDirectory=new File(Goal+'\\'+letter1+'\\'+letter2+'\\'+nameIdentifier);
 			if(!goalFileDirectory.exists()){
 				goalFileDirectory.mkdirs();
