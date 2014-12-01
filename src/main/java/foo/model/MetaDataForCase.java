@@ -7,39 +7,22 @@ import foo.element.big.MetaDataCase;
 import foo.element.big.MetaDataHeader;
 import foo.element.big.MetaDataRelations;
 
-public class MetaDataForCase {
+public class MetaDataForCase extends MetaData {
 
 
-	MetaDataHeader header;
 	MetaDataCase diseasecase;
-	MetaDataRelations relation;
-	MetaDataAdminMD adminMD;
-	public MetaDataHeader getHeader() {
-		return header;
-	}
-	public void setHeader(MetaDataHeader header) {
-		this.header = header;
-	}
+
 	public MetaDataCase getDiseasecase() {
 		return diseasecase;
 	}
+
 	public void setDiseasecase(MetaDataCase diseasecase) {
 		this.diseasecase = diseasecase;
 	}
-	public MetaDataRelations getRelation() {
-		return relation;
+
+	@Override
+	public String toString() {
+		return "MetaDataForCase ["+super.toString()+"diseasecase=" + diseasecase + "]";
 	}
-	public void setRelation(MetaDataRelations relation) {
-		this.relation = relation;
-	}
-	public MetaDataAdminMD getAdminMD() {
-		return adminMD;
-	}
-	public void setAdminMD(MetaDataAdminMD adminMD) {
-		this.adminMD = adminMD;
-	}
-	
-	
-	
 	
 }
