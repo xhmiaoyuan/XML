@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dom4j.Document;
@@ -22,6 +23,7 @@ import foo.element.smal.MetaDataEvidenceCopyRightDesc;
 import foo.element.smal.MetaDataRelationEvidenceItem;
 import foo.element.smal.MetaDataRelationFile;
 import foo.element.smal.MetaDataRelationKnowledge;
+import foo.model.MetaData;
 import foo.model.MetaDataForCase;
 import foo.model.MetaDataForDisease;
 
@@ -37,12 +39,28 @@ public class DOMXml {
 	// private File filexml= new
 	// File("C:\\Users\\my\\Desktop\\work2\\疾病标准样例.xml");
 	private File filexml = new File("E:\\BaiduYunDownload\\work2\\疾病标准样例.xml");
+	private List<String> listfile=new ArrayList<String>();
+	private List<MetaData> MetaDatas=new ArrayList();
+	
 	Document document;
 
+	
+	
+	public DOMXml(){
+		
+	}
+	
+	
 	public static void main(String[] args) {
 		DOMXml domxml = new DOMXml();
-		domxml.initial();
-		domxml.readDataFromXml();
+		domxml.create();
+
+	}
+	
+	
+	public void create(){
+		initial();
+		readDataFromXml();
 
 	}
 
@@ -55,7 +73,6 @@ public class DOMXml {
 			e.printStackTrace();
 		}
 	}
-
 	public void readDataFromXml() {
 		Element root = document.getRootElement();
 
@@ -286,5 +303,4 @@ public class DOMXml {
 		System.out.println(metaDisease.toString());
 		return metaDisease;
 	}
-
 }
