@@ -31,5 +31,12 @@ public class MetaDataExamination extends MetaDataForAll {
 	public void setSense(String sense) {
 		Sense = sense;
 	}
+	@Override
+	public String toString() {
+		return "MetaDataExamination [Indication=" + Indication
+				+ ", Contraindication=" + Contraindication + ", Method="
+				+ Method + ", Sense=" + Sense + "]";
+	}
+	
 	
 }

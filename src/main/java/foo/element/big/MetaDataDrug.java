@@ -8,23 +8,33 @@ public class MetaDataDrug extends MetaDataForAll{
 	String Toxicology;
 	String Pharmacokinetics;
 	String Indication;
-	String 	Instruction;
+	String Instruction;
 	String UntowardEffect;
 	String Contraindication;
 	String Matters;
 	String DrugInteraction;
+	String DrugOverdose;
 	String Storage;
 	String Packaging;
 	String PeriodValidity;
 	String Staple;
-	String  Specification;
+	String Specification;
 	String Form;
 	String Classify;
-	String ContraindicationInPregnancy;
+	String DrugForPregnancy;
 	String DrugForChildren;
 	String DrugForElder;
-	String Prescription;
-	String HealthInsurance;
+	String IsPrescription;
+	String MedicalInsuranceNumber;
+	
+	
+	
+	public String getDrugForPregnancy() {
+		return DrugForPregnancy;
+	}
+	public void setDrugForPregnancy(String drugForPregnancy) {
+		DrugForPregnancy = drugForPregnancy;
+	}
 	public String getAnotherName() {
 		return AnotherName;
 	}
@@ -127,12 +137,6 @@ public class MetaDataDrug extends MetaDataForAll{
 	public void setClassify(String classify) {
 		Classify = classify;
 	}
-	public String getContraindicationInPregnancy() {
-		return ContraindicationInPregnancy;
-	}
-	public void setContraindicationInPregnancy(String contraindicationInPregnancy) {
-		ContraindicationInPregnancy = contraindicationInPregnancy;
-	}
 	public String getDrugForChildren() {
 		return DrugForChildren;
 	}
@@ -145,17 +149,42 @@ public class MetaDataDrug extends MetaDataForAll{
 	public void setDrugForElder(String drugForElder) {
 		DrugForElder = drugForElder;
 	}
-	public String getPrescription() {
-		return Prescription;
+	public String getDrugOverdose() {
+		return DrugOverdose;
 	}
-	public void setPrescription(String prescription) {
-		Prescription = prescription;
+	public void setDrugOverdose(String drugOverdose) {
+		DrugOverdose = drugOverdose;
 	}
-	public String getHealthInsurance() {
-		return HealthInsurance;
+	public String getIsPrescription() {
+		return IsPrescription;
 	}
-	public void setHealthInsurance(String healthInsurance) {
-		HealthInsurance = healthInsurance;
+	public void setIsPrescription(String isPrescription) {
+		IsPrescription = isPrescription;
 	}
+	public String getMedicalInsuranceNumber() {
+		return MedicalInsuranceNumber;
+	}
+	public void setMedicalInsuranceNumber(String medicalInsuranceNumber) {
+		MedicalInsuranceNumber = medicalInsuranceNumber;
+	}
+	@Override
+	public String toString() {
+		return "MetaDataDrug [AnotherName=" + AnotherName + ", State=" + State
+				+ ", Toxicology=" + Toxicology + ", Pharmacokinetics="
+				+ Pharmacokinetics + ", Indication=" + Indication
+				+ ", Instruction=" + Instruction + ", UntowardEffect="
+				+ UntowardEffect + ", Contraindication=" + Contraindication
+				+ ", Matters=" + Matters + ", DrugInteraction="
+				+ DrugInteraction + ", DrugOverdose=" + DrugOverdose
+				+ ", Storage=" + Storage + ", Packaging=" + Packaging
+				+ ", PeriodValidity=" + PeriodValidity + ", Staple=" + Staple
+				+ ", Specification=" + Specification + ", Form=" + Form
+				+ ", Classify=" + Classify + ", DrugForPregnancy="
+				+ DrugForPregnancy + ", DrugForChildren=" + DrugForChildren
+				+ ", DrugForElder=" + DrugForElder + ", IsPrescription="
+				+ IsPrescription + ", MedicalInsuranceNumber="
+				+ MedicalInsuranceNumber + "]";
+	}
+	
 	
 }

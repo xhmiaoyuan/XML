@@ -12,7 +12,7 @@ public class MetaDataForAll {
 	String EnTitle;
 	List<String> Synonyms=new ArrayList<String>();
 	String Abstract;
-	ClassCode ClassCode;
+	List<ClassCode> ClassCode=new ArrayList<ClassCode>();
 	List<String> Tag=new ArrayList<String>();	
 	List<String> Notes=new ArrayList<String>();
 	
@@ -53,19 +53,20 @@ public class MetaDataForAll {
 	public void setTag(List<String> tag) {
 		Tag = tag;
 	}
-	public ClassCode getClassCode() {
+	public List<ClassCode> getClassCode() {
 		return ClassCode;
 	}
-	public void setClassCode(ClassCode classCode) {
+	public void setClassCode(List<ClassCode> classCode) {
 		ClassCode = classCode;
 	}
 	@Override
 	public String toString() {
-		return "Title=" + Title + ", EnTitle=" + EnTitle
+		return "MetaDataForAll [Title=" + Title + ", EnTitle=" + EnTitle
 				+ ", Synonyms=" + Synonyms + ", Abstract=" + Abstract
-				+ ", ClassCode=" + ClassCode + ", Tag=" + Tag;
+				+ ", ClassCode=" + ClassCode + ", Tag=" + Tag + ", Notes="
+				+ Notes + "]";
 	}
-
+	
 	
 	
 }

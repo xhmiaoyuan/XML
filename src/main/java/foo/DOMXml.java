@@ -7,10 +7,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.json.JSONArray;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
+import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 
 import foo.element.big.MetaDataAdminMD;
 import foo.element.big.MetaDataDisease;
@@ -27,22 +34,11 @@ import foo.function.FileOperation;
 import foo.model.MetaData;
 import foo.model.MetaDataForCase;
 import foo.model.MetaDataForDisease;
+import foo.mongoDBModel.ModelForMongoDB;
 
 public class DOMXml {
 
-	private final String ROOT = "medicine";
-	private final String HEADER = "header";
-	private final String METADATA = "metadata";
-	private final String REALATIONS = "Relations";
-	private final String ADMINMD = "adminMD";
-	public static final DateFormat ISO8601_DATE_FORMAT = new SimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ss");
-	// private File filexml= new
-	// File("C:\\Users\\my\\Desktop\\work2\\疾病标准样例.xml");
-	private File filexml = new File("E:\\BaiduYunDownload\\work2\\疾病标准样例.xml");
-	private List<String> listfile=new ArrayList<String>();
-	private List<MetaData> MetaDatas=new ArrayList();
-	private String absoulute ="E:\\BaiduYunDownload\\work2\\demo"; 
+
 	
 
 
@@ -53,7 +49,7 @@ public class DOMXml {
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		DOMXml domxml = new DOMXml();
 		List<MetaData> listMetaData=new ArrayList<MetaData>();
 		String pathDirectory="E:\\BaiduYunDownload\\work2\\demo";
@@ -61,9 +57,17 @@ public class DOMXml {
 		for(MetaData meta:listMetaData){
 			List<String> listString=domxml.getFilePath(meta);
 			FileOperation fileOperation=new FileOperation();
-			if(meta.getHeader().getMetaDataID().equals("am_disease")){
+			if(meta.getHeader().getMetaDataID().equals(ValueClass.DISEASE)){
 				MetaDataForDisease me=(MetaDataForDisease) meta;
-				fileOperation.pastFile(listString,me.getDisease().getTitle()+me.getHeader().getIdentifier(), "F:\\");
+				MetaDataToMongoDBModel metadata=new MetaDataToMongoDBModel();
+				ModelForMongoDB mongDBModel=metadata.convertMetaData(me);
+				PushDataToMongoDB mongoDB=new PushDataToMongoDB();
+				Gson gson=new Gson();
+				BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(mongDBModel));
+				mongoDB.insertData(obj);
+				System.out.println(obj.toString());
+				
+				//fileOperation.pastFile(listString,me.getDisease().getTitle()+me.getHeader().getIdentifier(), "F:\\");
 			}
 			
 		}
@@ -90,7 +94,7 @@ public class DOMXml {
 		List<MetaDataRelationFile> filePaths=metadata.getRelation().getFile();
 		List<String> listString=new ArrayList<String>();
 		for(MetaDataRelationFile f:filePaths){
-			listString.add(absoulute+"\\"+f.getFileName());
+			listString.add(ValueClass.ABSOLUTIPATH+"\\"+f.getFileName());
 		}
 		return listString; 
 		
@@ -126,24 +130,25 @@ public class DOMXml {
 		MetaDataAdminMD adminMD = null;
 		String type = null;
 		for (Element child : nodes) {
-			if (child.getName().equals(HEADER)) {
+			if (child.getName().equals(ValueClass.HEADER)) {
 				 mdh = addXMLHeader(child);
 				System.out.println(mdh.getMetaDataID());
 				type = mdh.getMetaDataID();
-			} else if (child.getName().equals(METADATA)) {
-				if (type.equals("am_disease")) {
+			} else if (child.getName().equals(ValueClass.METADATA)) {
+				if (type.equals(ValueClass.DISEASE)) {
 					metadata = new MetaDataForDisease();
 					metaDataForall = new MetaDataDisease();
 					addXMLMetaDaraForAll(metaDataForall,child);
 					addXMLMetaDataDisease((MetaDataDisease)metaDataForall,child);
 				}
-				else if(child.getName().equals("am_case")){
-					metadata =new MetaDataForDisease();
+				else if(child.getName().equals(ValueClass.OPERATION)){
+					//metadata =new MetaDataForOperation();
+					
 					
 				}
-			} else if (child.getName().equals(REALATIONS)) {
+			} else if (child.getName().equals(ValueClass.REALATIONS)) {
 				relation=addXMLRelation(child);
-			} else if (child.getName().equals(ADMINMD)) {
+			} else if (child.getName().equals(ValueClass.ADMINMD)) {
 				adminMD=addXMLAdminMD(child);
 			}
 			System.out.println(child.getName());
@@ -173,11 +178,10 @@ public class DOMXml {
 			} else if (el.getName().equals("Synonym")) {
 				metadataForAll.getSynonyms().add(el.getText());
 			} else if (el.getName().equals("ClassCode")) {
-
 				ClassCode classCode = new ClassCode();
 				classCode.setText(el.attributeValue("Type"));
 				classCode.setType(el.getText());
-				metadataForAll.setClassCode(classCode);
+				metadataForAll.getClassCode().add(classCode);
 			} else if (el.getName().equals("Tag")) {
 				metadataForAll.getTag().add(el.getText());
 			}
@@ -317,9 +321,9 @@ public class DOMXml {
 		MetaDataHeader header = new MetaDataHeader();
 		header.setIdentifier(e.elementText("identifier"));
 		header.setComplexOID(e.elementText("complexOID"));
-		header.setCreateDate(ISO8601_DATE_FORMAT.parse(e
+		header.setCreateDate(ValueClass.ISO8601_DATE_FORMAT.parse(e
 				.elementText("createdDate")));
-		header.setLastModifiedDate(ISO8601_DATE_FORMAT.parse(e
+		header.setLastModifiedDate(ValueClass.ISO8601_DATE_FORMAT.parse(e
 				.elementText("lastModifiedDate")));
 		Element metaType = e.element("metadataType");
 		header.setMetaDataID(metaType.attributeValue("ID"));
