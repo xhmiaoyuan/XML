@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<medicine Version="1.0">
+	<header>
+		<metadataType Version="1.0" ID="am_drug"/>
+		<identifier>NN3GYSTD</identifier>
+		<complexOID>com.NN3GYSTD</complexOID>
+		<createdDate>2014-05-29T17:26:33 Z</createdDate>
+		<lastModifiedDate>2014-06-13T11:43:22 Z</lastModifiedDate>
+	</header>
+	<metadata>
+		<Title>克罗恩病</Title>
+		<Abstract>克罗恩病于1932年由Crohn、Ginzterg和Oppenheime最早描述，故得此名。本病又曾被称为“局限性肠炎”、“节段性肠炎”、“慢性肠壁全层炎”等。1973年，世界卫生组织医学科学国际组织委员会将本病定名为Crohn病。其特点为病因未明，多见于青年人，表现为肉芽肿性炎症病变，合并纤维化与溃疡。可侵及全胃肠道的任何部位，包括口腔、肛门，病变呈节段性或跳跃性分布，并可侵及肠道以外，特别是皮肤。临床表现因病变部位、范围及程度不同而多样化，病程缓慢，易复发。</Abstract>
+		<Synonym>局限性肠炎</Synonym>
+		<Synonym>节段性肠炎</Synonym>
+		<Synonym>慢性肠壁全层炎</Synonym>
+		<ClassCode Type="body">部位名称</ClassCode>
+		<Tag>疾病</Tag>
+		<Tag>内科</Tag>
+		<Notes></Notes>
+		<Alias/><State/><Toxicology/><Pharmacokinetics/><Indication>用于肝气郁结，气滞血瘀，乳腺增生，乳房胀痛。</Indication><Instruction>口服。颗粒剂：开水冲服，一次1袋，一日3次，或遵医嘱。</Instruction><UntowardEffect>恶心</UntowardEffect><Contraindication>孕妇慎用</Contraindication><Matters>不能过量服用</Matters><DrugInteraction>不能喝酒</DrugInteraction><DrugOverdose>多喝水解药</DrugOverdose><Storage>阴凉通风</Storage><Packaging>胶囊</Packaging><PeriodValidation>2014.7-2016.3</PeriodValidation><MainIngredients>大麻</MainIngredients><Specification>20片一板</Specification><Form>胶囊</Form><Classify>西药</Classify><DrugForPregnancy>孕妇不宜使用</DrugForPregnancy><DrugForChildren>儿童应适当减量</DrugForChildren><DrugForElder>老人不宜使用</DrugForElder><IsPrescription>处方药</IsPrescription><MedicalInsuranceNumber>IOS782345999274</MedicalInsuranceNumber></metadata>
+	<Relations>
+		<Knowledges>
+			<Knowledge type="am_examination" ID="NYUTRSI6" relevance="6.3451">内镜检查</Knowledge>
+			<Knowledge type="am_disease" ID="NPIUVM4G" relevance="2.9806">肠病</Knowledge>
+		</Knowledges>
+		<fileSec>
+			<file FileName="201405141200216.docx" FilePath="" FileDesc="" Order="1">
+				<id>
+					<ObjID>m.20140515-NTZL-888-0089.cp.docx.1</ObjID>
+					<PObjID/>
+				</id>
+				<techMD>
+					<FileTitle>临床路径名称</FileTitle>
+					<FileDesc>临床路径描述内容</FileDesc>
+					<FileSize/>
+					<Format>docx</Format>
+					<EncryptInfo>1</EncryptInfo>
+					<ObjType>CP</ObjType>
+					<Width/>
+					<Heigth/>
+					<FileNotes></FileNotes>
+				</techMD>
+			</file>
+			<file FileName="201405141200216.jpg" FilePath="" FileDesc="" Order="2">
+				<id>
+					<ObjID>m.20140515-NTZL-888-0089.pic.jpg.2</ObjID>
+					<PObjID/>
+				</id>
+				<techMD>
+					<FileTitle>文件名称</FileTitle>
+					<FileDesc>文件描述</FileDesc>
+					<FileSize/>
+					<Format>jpg</Format>
+					<EncryptInfo>1</EncryptInfo>
+					<ObjType>P</ObjType>
+					<Width>240</Width>
+					<Heigth>320</Heigth>
+					<FileNotes></FileNotes>
+				</techMD>
+			</file>
+			<file FileName="201405141200215.jpg" FilePath="" FileDesc="" Order="3">
+				<id>
+					<ObjID>m.20140515-NTZL-888-0089.pic.jpg.3</ObjID>
+					<PObjID/>
+					<ADOI/>
+				</id>
+				<techMD>
+					<FileTitle>文件名称</FileTitle>
+					<FileDesc>文件描述</FileDesc>
+					<FileSize/>
+					<Format>jpg</Format>
+					<EncryptInfo>1</EncryptInfo>
+					<ObjType>P</ObjType>
+					<Width>240</Width>
+					<Heigth>320</Heigth>
+					<FileNotes></FileNotes>
+				</techMD>
+			</file>
+			<file FileName="201405141200215.flv" FilePath="" FileDesc="" Order="4">
+				<id>
+					<ObjID>m.20140515-NTZL-888-0089.video.flv.4</ObjID>
+					<PObjID/>
+					<ADOI/>
+				</id>
+				<techMD>
+					<FileTitle>文件名称</FileTitle>
+					<FileDesc>文件描述</FileDesc>
+					<FileSize/>
+					<Format>flv</Format>
+					<EncryptInfo>1</EncryptInfo>
+					<ObjType>V</ObjType>
+					<Width></Width>
+					<Heigth></Heigth>
+					<FileNotes>采用Key=Value形式显示，多个用##分隔</FileNotes>
+				</techMD>
+			</file>
+		</fileSec>
+		<Sentences>
+			<Sentence order="1">
+				<Text>句子内容</Text>
+				<SentenceClass>句子分类</SentenceClass>
+				<STag>句子标签1</STag>
+				<STag>句子标签2</STag>
+				<STag>句子标签3</STag>
+				<Page>24</Page>
+				<BookTitle>所在图书标题</BookTitle>
+				<MetaID>句子所在图书编号</MetaID>
+				<ObjID>句子分类所在文件编号</ObjID>
+			</Sentence>
+			<Sentence order="2">
+				<Text>句子内容</Text>
+				<SentenceClass>句子分类</SentenceClass>
+				<STag>句子标签1</STag>
+				<STag>句子标签2</STag>
+				<STag>句子标签3</STag>
+				<Page>26</Page>
+				<MetaID>句子所在图书编号</MetaID>
+				<ObjID>句子分类所在文件编号</ObjID>
+			</Sentence>
+			<Sentence order="3">
+				<Text>句子内容</Text>
+				<SentenceClass>句子分类</SentenceClass>
+				<STag>句子标签1</STag>
+				<Page>12</Page>
+				<MetaID>句子所在图书编号</MetaID>
+				<ObjID>句子分类所在文件编号</ObjID>
+			</Sentence>
+		</Sentences>
+		<Evidences>
+			<EvidenceItem creator="李俊峡 吴龙梅 田新利 " source="中国循证心血管医学杂志 2013,5(3):213-214" url="http://www.ebcvm.com/Magazine/Show.aspx?ID=41211">冠状动脉药物洗脱支架置入术后双联抗血小板治疗的时间</EvidenceItem>
+		</Evidences>
+	</Relations>
+	<adminMD>
+		<CopyRightsDesc CopyRightOwnerID="ow.000000001588" URL="http://baike.baidu.com">百度百科</CopyRightsDesc>
+		<Source>http://baike.baidu.com/view/81333.htm</Source>
+		<EditorVersion>12</EditorVersion>
+	</adminMD>
+</medicine>

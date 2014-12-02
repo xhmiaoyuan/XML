@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<medicine Version="1.0">
+  <header>
+    <metadataType ID="am_case" Version="1.0" />
+    <identifier>NN3GYSTD</identifier>
+    <complexOID>com.NN3GYSTD</complexOID>
+    <createdDate>2014-05-29T17:26:33</createdDate>
+    <lastModifiedDate>2014-06-13T11:43:22</lastModifiedDate>
+  </header>
+  <metadata>
+    <Title>腹腔干动脉变异病例1</Title>
+    <Abstract>病例说明</Abstract>
+    <disease>干动脉变异</disease>
+    <disease>肾动脉狭窄</disease>
+    <ClassCode Type="department">科室名称</ClassCode>
+    <Tag>病例</Tag>
+    <Tag>内科</Tag>
+    <发布日期>2014-04-22</发布日期>
+    <作者>朱慧明、王玉林（暨南大学医学院附属深圳市人民医院消化科）陈灼怀（病理科）张万岱（第一军医大学南方医学院消化饼研究所）</作者>
+    <病人信息>患者女性，37岁。</病人信息>
+    <病史>是起始部呈2支型后汇合成1支肾动脉变异的病例。</病史>
+    <检查><![CDATA[极易根据左肾动脉起始变细，误诊为肾动脉狭窄，容易将正常血管的变异误诊为异常改变的病例，如果经过对该病例全面观察及综合分析，会发现肾动脉在起始部2支及汇合之后的1支，彩色血流显示均为层流，血流频谱形态及血流速度均正常，双肾大小正常及肾内血管彩色充盈良好。<p align="center"><img src="m.20071207-m300-w001-017000017.jpg"/></p>经肾动脉血管造影证实为肾动脉在起始部2支之后汇合成1支的正常变异见图。本例与肾动脉在起始部局限性狭窄的不同之处，在肾动脉起始部局限性狭窄时，狭窄处应出现高速的湍流，窄后出现扩张，扩张段血流呈涡流，并可伴有患侧肾体积变小，肾内血管彩色显示不良。]]></检查>
+    <结论>对该病例的判断等</结论>
+  </metadata>
+  <Relations>
+    <Knowledges>
+      <Knowledge type="am_examination" order="1">内镜检查</Knowledge>
+      <Knowledge type="am_disease" order="2">肠病</Knowledge>
+    </Knowledges>
+    <fileSec>
+      <file FileName="201405141200216.jpg" FilePath="" FileDesc="" Order="2">
+        <id>
+          <ObjID>m.20140515-NTZL-888-0089.pic.jpg.2</ObjID>
+          <PObjID />
+        </id>
+        <techMD>
+          <FileTitle>文件名称</FileTitle>
+          <FileDesc>文件描述</FileDesc>
+          <FileSize />
+          <Format>jpg</Format>
+          <EncryptInfo>1</EncryptInfo>
+          <ObjType>C</ObjType>
+          <Width>240</Width>
+          <Heigth>320</Heigth>
+          <FileNotes></FileNotes>
+        </techMD>
+      </file>
+      <file FileName="201405141200215.jpg" FilePath="" FileDesc="" Order="3">
+        <id>
+          <ObjID>m.20140515-NTZL-888-0089.pic.jpg.3</ObjID>
+          <PObjID />
+        </id>
+        <techMD>
+          <FileTitle>文件名称</FileTitle>
+          <FileDesc>文件描述</FileDesc>
+          <FileSize />
+          <Format>jpg</Format>
+          <EncryptInfo>1</EncryptInfo>
+          <ObjType>C</ObjType>
+          <Width>240</Width>
+          <Heigth>320</Heigth>
+          <FileNotes></FileNotes>
+        </techMD>
+      </file>
+    </fileSec>
+  </Relations>
+  <adminMD>
+    <CopyRightsDesc CopyRightOwnerID="ow.000000001588" URL="http://www.emedicine.org.cn">中华内科杂志</CopyRightsDesc>
+    <Source>http://www.emedicine.org.cn/view/81333.htm</Source>
+    <EditorVersion>3</EditorVersion>
+  </adminMD>
+</medicine>
