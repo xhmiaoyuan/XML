@@ -12,27 +12,14 @@ public class GetFirstLetter {
 	static final char[] firstLetter = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'w', 'x', 'y', 'z' };
 
 	// 获取一个字符串的拼音码
-	public static String getFirstLetter(String oriStr) {
-
-//		String str = oriStr.toLowerCase();
-//		StringBuffer buffer = new StringBuffer();
-//		char ch;
-//		char[] temp;
-//		for (int i = 0; i < str.length(); i++) { // 依次处理str中每个字符
-//			ch = str.charAt(i);
-//			temp = new char[] { ch };
-//			byte[] uniCode = new String(temp).getBytes();
-//			if (uniCode[0] < 128 && uniCode[0] > 0) { // 非汉字
-//				buffer.append(temp);
-//			} else {
-//				buffer.append(convert(uniCode));
-//			}
-//		}
-//		return buffer.toString();
+	public static String getString(String oriStr) {
 		
-		char m =oriStr.charAt(0);
 		
-		return getFirstLetter(m).toString();
+		StringBuilder str=new StringBuilder();
+		for(int i=1;i<=oriStr.length();i++){
+		str.append(getFirstLetter(oriStr.charAt(i-1)));
+		}		
+		return str.toString();
 		
 	}
 	// 获取一个汉字的拼音码
@@ -74,6 +61,6 @@ public class GetFirstLetter {
 	}
 	
 	public static void main(String[] arg){
-		System.out.println(getFirstLetter("我爱北京天安门"));
+		//System.out.println(getFirstLetter("我爱北京天安门"));
 	}
 }

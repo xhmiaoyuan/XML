@@ -38,11 +38,6 @@ import foo.mongoDBModel.ModelForMongoDB;
 
 public class DOMXml {
 
-
-	
-
-
-	
 	
 	public DOMXml(){
 		
@@ -59,15 +54,16 @@ public class DOMXml {
 			FileOperation fileOperation=new FileOperation();
 			if(meta.getHeader().getMetaDataID().equals(ValueClass.DISEASE)){
 				MetaDataForDisease me=(MetaDataForDisease) meta;
+				PushDataToSolr solr=new PushDataToSolr("E:\\solr_home\\collection1\\data\\index");
+				solr.convertDataToSolr(me);
+
 				MetaDataToMongoDBModel metadata=new MetaDataToMongoDBModel();
 				ModelForMongoDB mongDBModel=metadata.convertMetaData(me);
 				PushDataToMongoDB mongoDB=new PushDataToMongoDB();
-				Gson gson=new Gson();
-				BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(mongDBModel));
-				mongoDB.insertData(obj);
-				System.out.println(obj.toString());
-				
-				//fileOperation.pastFile(listString,me.getDisease().getTitle()+me.getHeader().getIdentifier(), "F:\\");
+
+				mongoDB.insertData(mongDBModel);
+//				
+				fileOperation.pastFile(listString,me.getDisease().getTitle()+me.getHeader().getIdentifier(), "F:\\");
 			}
 			
 		}
@@ -179,8 +175,8 @@ public class DOMXml {
 				metadataForAll.getSynonyms().add(el.getText());
 			} else if (el.getName().equals("ClassCode")) {
 				ClassCode classCode = new ClassCode();
-				classCode.setText(el.attributeValue("Type"));
-				classCode.setType(el.getText());
+				classCode.setType(el.attributeValue("Type"));
+				classCode.setText(el.getText());
 				metadataForAll.getClassCode().add(classCode);
 			} else if (el.getName().equals("Tag")) {
 				metadataForAll.getTag().add(el.getText());

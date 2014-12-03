@@ -7,20 +7,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class FileOperation {
 
 
 	public void pastFile(List<String> fileList,String nameIdentifier,String Goal){
-		String letter1=GetFirstLetter.getFirstLetter(nameIdentifier);
-		String letter2=GetFirstLetter.getFirstLetter(nameIdentifier.substring(1, nameIdentifier.length()-1));
-		
+		String letter1=GetFirstLetter.getFirstLetter(nameIdentifier.charAt(0)).toString();
+//		String letter2=GetFirstLetter.getFirstLetter(nameIdentifier.substring(1, nameIdentifier.length()-1));
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+		Calendar calendar=Calendar.getInstance();
+		String data=sdf.format(calendar.getTime());
 		for(String filep:fileList){
 			String originFile=filep;
-			String goalFile=Goal+'\\'+letter1+'\\'+letter2+'\\'+nameIdentifier+'\\'+filep.substring(filep.lastIndexOf("\\"),filep.length());
-			File goalFileDirectory=new File(Goal+'\\'+letter1+'\\'+letter2+'\\'+nameIdentifier);
+			String goalFile=Goal+'\\'+data+'\\'+letter1+'\\'+nameIdentifier+'\\'+filep.substring(filep.lastIndexOf("\\"),filep.length());
+			File goalFileDirectory=new File(Goal+'\\'+data+'\\'+letter1+'\\'+nameIdentifier);
 			if(!goalFileDirectory.exists()){
 				goalFileDirectory.mkdirs();
 			}

@@ -77,13 +77,6 @@ public class MetaDataToMongoDBModel {
 			str.add(disease.getDisease().getPrognosis());
 			pre1.setObjectsList(str);	
 			listpredication.add(pre1);			
-		} if(disease.getDisease().getPrognosis()!=null){
-			Predication pre1=new Predication();
-			pre1.setPredicateName("预后");
-			List<String> str=new ArrayList<String>();
-			str.add(disease.getDisease().getPrognosis());
-			pre1.setObjectsList(str);	
-			listpredication.add(pre1);			
 		} if(disease.getDisease().getAbstract()!=null){
 			Predication pre1=new Predication();
 			pre1.setPredicateName("定义及概述");
