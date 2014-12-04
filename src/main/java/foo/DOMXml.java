@@ -20,12 +20,21 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
 import foo.element.big.MetaDataAdminMD;
+import foo.element.big.MetaDataCase;
 import foo.element.big.MetaDataDisease;
+import foo.element.big.MetaDataDrug;
+import foo.element.big.MetaDataExamination;
 import foo.element.big.MetaDataForAll;
 import foo.element.big.MetaDataHeader;
+import foo.element.big.MetaDataOperation;
 import foo.element.big.MetaDataRelations;
+import foo.element.big.MetaDataSymptom;
 import foo.element.smal.ClassCode;
 import foo.element.smal.MateDataRelationSentence;
+import foo.element.smal.MetaDataCaseMedicalHistory;
+import foo.element.smal.MetaDataCasePatient;
+import foo.element.smal.MetaDataCasePic;
+import foo.element.smal.MetaDataCasePresent;
 import foo.element.smal.MetaDataEvidenceCopyRightDesc;
 import foo.element.smal.MetaDataRelationEvidenceItem;
 import foo.element.smal.MetaDataRelationFile;
@@ -34,6 +43,8 @@ import foo.function.FileOperation;
 import foo.model.MetaData;
 import foo.model.MetaDataForCase;
 import foo.model.MetaDataForDisease;
+import foo.model.MetaDataForOperation;
+import foo.model.MetaDataForSymptom;
 import foo.mongoDBModel.ModelForMongoDB;
 
 public class DOMXml {
@@ -137,10 +148,33 @@ public class DOMXml {
 					addXMLMetaDaraForAll(metaDataForall,child);
 					addXMLMetaDataDisease((MetaDataDisease)metaDataForall,child);
 				}
-				else if(child.getName().equals(ValueClass.OPERATION)){
-					//metadata =new MetaDataForOperation();
+				else if(type.equals(ValueClass.SYMPTOM)){
+					metadata =new MetaDataForSymptom();
+					metaDataForall=new MetaDataSymptom();
+					addXMLMetaDaraForAll(metaDataForall, child);
+					addXMLMetaDataSymptom((MetaDataSymptom)metaDataForall,child);		
+				}
+				else if(type.equals(ValueClass.OPERATION)){
+					metadata=new MetaDataForOperation();
+					metaDataForall=new MetaDataOperation();
+					addXMLMetaDaraForAll(metaDataForall, child);
+					addXMLMetaDataOperation((MetaDataOperation)metaDataForall,child);
 					
-					
+				}else if(type.equals(ValueClass.EXAMINATION)){
+					metadata=new MetaDataForOperation();
+					metaDataForall=new MetaDataExamination();
+					addXMLMetaDaraForAll(metaDataForall, child);
+					addXMLMetaDataExamination((MetaDataExamination)metaDataForall,child);
+				}else if(type.equals(ValueClass.DRUG)){
+					metadata=new MetaDataForOperation();
+					metaDataForall=new MetaDataDrug();
+					addXMLMetaDaraForAll(metaDataForall, child);
+					addXMLMetaDataDrug((MetaDataDrug)metaDataForall,child);
+				}else if(type.equals(ValueClass.CASE)){
+					metadata=new MetaDataForCase();
+					metaDataForall=new MetaDataDrug();
+					addXMLMetaDaraForAll(metaDataForall, child);
+					addXMLMetaDataCase((MetaDataCase)metaDataForall,child);
 				}
 			} else if (child.getName().equals(ValueClass.REALATIONS)) {
 				relation=addXMLRelation(child);
@@ -163,6 +197,205 @@ public class DOMXml {
 
 		return null;
 	}
+
+	private MetaDataCase addXMLMetaDataCase(MetaDataCase metaDatacase, Element child) throws ParseException {
+		// TODO Auto-generated method stub
+		List<Element> elements = child.elements();
+
+		for (Element el : elements) {
+			if (el.getName().equals("Creator")) {
+				metaDatacase.setCreator(el.getText());
+			} else if (el.getName().equals("PublishDate")) {
+				metaDatacase.setPublishDate(ValueClass.ISO8601_DATE_FORMAT.parse(el.getText()));
+			} else if (el.getName().equals("Patient")) {
+				MetaDataCasePatient patient=new MetaDataCasePatient();
+				if(el.attributeValue("Number")!=null){
+					patient.setNumber(el.attributeValue("Number"));					
+				}if(el.attributeValue("Name")!=null){
+					patient.setName(el.attributeValue("Name"));
+				}if(el.attribute("Sex")!=null){
+					patient.setSex(el.attributeValue("Sex"));
+				}if(el.attributeValue("Age")!=null){
+					patient.setAge(el.attributeValue("Age"));
+				}if(el.attributeValue("Nationality")!=null){
+					patient.setNationality(el.attributeValue("Nationality"));
+				}if(el.attributeValue("Height")!=null){
+					patient.setHeight(Long.parseLong(el.attributeValue("Height")));
+				}if(el.attributeValue("Weight")!=null){
+					patient.setWeight(Long.parseLong(el.attributeValue("Weight")));
+				}if(el.attributeValue("MaritalStatus")!=null){
+					patient.setMaritalStatus(el.attributeValue("MaritalStatus"));
+				}if(el.attributeValue("Occupation")!=null){
+					patient.setPosition(el.attributeValue("Occupation"));
+				}if(el.attributeValue("PalceOfBron")!=null){
+					patient.setPlaceOfBron(el.attributeValue("PalceOfBron"));
+				}if(el.attributeValue("PalceOfLive")!=null){
+					patient.setPlaceOfLive(el.attributeValue("PalceOfLive"));
+				}
+				metaDatacase.setPatient(patient);
+			} else if (el.getName().equals("MedicalHistory")) {
+				MetaDataCaseMedicalHistory history=new MetaDataCaseMedicalHistory();
+				if(el.attributeValue("Statement")!=null){
+					history.setStatement(el.attributeValue("Statement"));
+				}if(el.attributeValue("PresentIllness")!=null){
+					history.setPresentIllness(el.attributeValue("PresentIllness"));
+				}if(el.attributeValue("PreviousHistory")!=null){
+					history.setPreviousHistory(el.attributeValue("PreviousHistory"));
+				}if(el.attributeValue("FamilyHistory")!=null){
+					history.setFamilyHistory(el.attributeValue("FamilyHistory"));
+				}if(el.attributeValue("SpecialCheck")!=null){
+					history.setSpecialCheck(el.attributeValue("SpecialCheck"));
+				}if(el.attributeValue("Laboratory")!=null){
+					history.setLabortory(el.attributeValue("Laboratory"));
+				}if(el.attributeValue("TreatmentProcess")!=null){
+					history.setTreatmentProcess(el.attributeValue("TreatmentProcess"));
+				}
+				metaDatacase.setMedicalHistory(history);
+			} 
+			else if(el.getName().equals("Image")){
+				MetaDataCasePic pic=new MetaDataCasePic();
+				if(el.attributeValue("ImageContent")!=null){
+					pic.setContext(el.attributeValue("ImageContent"));
+				}
+				metaDatacase.setImage(pic);
+			}
+			else if(el.getName().equals("Interpret")){
+				MetaDataCasePresent interpret=new MetaDataCasePresent();
+				if(el.attributeValue("Interpret")!=null){
+					interpret.setInterpret(el.attributeValue("Interpret"));
+				}if(el.attributeValue("Video")!=null){
+					interpret.setInterpret(el.attributeValue("Video"));
+				}if(el.attributeValue("Person")!=null){
+					interpret.setPerson(el.attributeValue("Person"));
+				}if(el.attributeValue("Organization")!=null){
+					interpret.setOrganization(el.attributeValue("Organization"));
+				}
+				metaDatacase.setInterpret(interpret);
+			}
+		}
+		return metaDatacase;
+
+		
+	}
+
+
+	private MetaDataDrug addXMLMetaDataDrug(MetaDataDrug metaDataDrug, Element child) {
+		List<Element> elements = child.elements();
+
+		for (Element el : elements) {
+			if (el.getName().equals("Alias")) {
+				metaDataDrug.setAlias(el.getText());
+			} else if (el.getName().equals("State")) {
+				metaDataDrug.setState(el.getText());
+			} else if (el.getName().equals("Toxicology")) {
+				metaDataDrug.setToxicology(el.getText());
+			} else if (el.getName().equals("Pharmacokinetics")) {
+				metaDataDrug.setPharmacokinetics(el.getText());
+			} else if (el.getName().equals("Indication")) {
+				metaDataDrug.setIndication(el.getText());
+			} else if (el.getName().equals("Instruction")) {
+				metaDataDrug.setInstruction(el.getText());
+			} else if (el.getName().equals("UntowardEffect")) {
+				metaDataDrug.setUntowardEffect(el.getText());
+			} else if (el.getName().equals("Contraindication")) {
+				metaDataDrug.setContraindication(el.getText());
+			} else if (el.getName().equals("Matters")) {
+				metaDataDrug.setMatters(el.getText());
+			} else if (el.getName().equals("DrugInteraction")) {
+				metaDataDrug.setDrugInteraction(el.getText());
+			}  else if (el.getName().equals("DrugOverdose")) {
+				metaDataDrug.setDrugOverdose(el.getText());
+			} else if (el.getName().equals("Storage")) {
+				metaDataDrug.setStorage(el.getText());
+			} else if (el.getName().equals("Packaging")) {
+				metaDataDrug.setPackaging(el.getText());
+			} else if (el.getName().equals("PeriodValidation")) {
+				metaDataDrug.setPeriodValidation(el.getText());
+			} else if (el.getName().equals("Ingredients")) {
+				metaDataDrug.setIngredients(el.getText());
+			} else if (el.getName().equals("Specification")) {
+				metaDataDrug.setSpecification(el.getText());
+			} else if (el.getName().equals("Form")) {
+				metaDataDrug.setForm(el.getText());
+			}  else if (el.getName().equals("Classify")) {
+				metaDataDrug.setClassify(el.getText());
+			}  else if (el.getName().equals("DrugForPregnancy")) {
+				metaDataDrug.setDrugForPregnancy(el.getText());
+			} else if (el.getName().equals("DrugForChildren")) {
+				metaDataDrug.setDrugForChildren(el.getText());
+			} else if (el.getName().equals("DrugForElder")) {
+				metaDataDrug.setDrugForElder(el.getText());
+			} else if (el.getName().equals("IsPrescription")) {
+				metaDataDrug.setIsPrescription(el.getText());
+			} else if (el.getName().equals("MedicalInsuranceNumber")) {
+				metaDataDrug.setMedicalInsuranceNumber(el.getText());
+			} 
+		}
+		return metaDataDrug;
+		
+	}
+
+
+	private MetaDataExamination addXMLMetaDataExamination(MetaDataExamination metaDataExamination,
+			Element child) {
+		List<Element> elements = child.elements();
+
+		for (Element el : elements) {
+			if (el.getName().equals("Indication")) {
+				metaDataExamination.setIndication(el.getText());
+			} else if (el.getName().equals("Contraindications")) {
+				metaDataExamination.setContraindications(el.getText());
+			} else if (el.getName().equals("Method")) {
+				metaDataExamination.setMethod(el.getText());
+			} else if (el.getName().equals("Sense")) {
+				metaDataExamination.setSense(el.getText());
+			} 
+		}
+		return metaDataExamination;
+
+		
+	}
+
+
+	private MetaDataOperation addXMLMetaDataOperation(MetaDataOperation metaDataOperation,
+			Element child) {
+		List<Element> elements = child.elements();
+
+		for (Element el : elements) {
+			if (el.getName().equals("Preparation")) {
+				metaDataOperation.setPreparation(el.getText());
+			} else if (el.getName().equals("Anaesthesia")) {
+				metaDataOperation.setAnaesthesia(el.getText());
+			} else if (el.getName().equals("Procedure")) {
+				metaDataOperation.setProcedure(el.getText());
+			} else if (el.getName().equals("Attention")) {
+				metaDataOperation.setAttention(el.getText());
+			} else if (el.getName().equals("Theatment")) {
+				metaDataOperation.setTheatment(el.getText());
+			} 
+		}
+		return metaDataOperation;
+
+		
+	}
+
+
+	private MetaDataSymptom addXMLMetaDataSymptom(MetaDataSymptom metaDataSymptom,
+			Element child) {
+		List<Element> elements = child.elements();
+		for (Element el : elements) {
+			if (el.getName().equals("Cause")) {
+				metaDataSymptom.setCause(el.getText());
+			} else if (el.getName().equals("Diagnosis")) {
+				metaDataSymptom.setDisgnosis(el.getText());
+			} else if (el.getName().equals("Therapy")) {
+				metaDataSymptom.setTherapy(el.getText());
+			} 
+		}
+		System.out.println(metaDataSymptom.toString());
+		return metaDataSymptom;
+	}
+
 
 	private void addXMLMetaDaraForAll(MetaDataForAll metadataForAll,Element e) {
 		List<Element> elements = e.elements();

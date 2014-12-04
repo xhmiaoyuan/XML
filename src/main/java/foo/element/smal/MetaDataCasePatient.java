@@ -1,6 +1,6 @@
 package foo.element.smal;
 
-public class MetaDataPatient {
+public class MetaDataCasePatient {
 
 	String Number;
 	String Name;

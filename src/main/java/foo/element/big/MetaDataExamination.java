@@ -4,7 +4,7 @@ package foo.element.big;
 public class MetaDataExamination extends MetaDataForAll {
 
 	String Indication;
-	String Contraindication;
+	String Contraindications;
 	String Method;
 	String Sense;
 	public String getIndication() {
@@ -13,11 +13,11 @@ public class MetaDataExamination extends MetaDataForAll {
 	public void setIndication(String indication) {
 		Indication = indication;
 	}
-	public String getContraindication() {
-		return Contraindication;
+	public String getContraindications() {
+		return Contraindications;
 	}
-	public void setContraindication(String contraindication) {
-		Contraindication = contraindication;
+	public void setContraindications(String contraindications) {
+		Contraindications = contraindications;
 	}
 	public String getMethod() {
 		return Method;
@@ -34,7 +34,7 @@ public class MetaDataExamination extends MetaDataForAll {
 	@Override
 	public String toString() {
 		return "MetaDataExamination [Indication=" + Indication
-				+ ", Contraindication=" + Contraindication + ", Method="
+				+ ", Contraindication=" + Contraindications + ", Method="
 				+ Method + ", Sense=" + Sense + "]";
 	}
 	

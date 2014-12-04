@@ -1,59 +1,70 @@
 package foo.element.big;
 
+import java.util.Date;
+
+import foo.element.smal.MetaDataCaseDiagnosis;
+import foo.element.smal.MetaDataCaseMedicalHistory;
 import foo.element.smal.MetaDataCasePic;
 import foo.element.smal.MetaDataCasePresent;
-import foo.element.smal.MetaDataPatient;
+import foo.element.smal.MetaDataCasePatient;
 
 public class MetaDataCase extends MetaDataForAll {
 
 	String Creator;
-	String PublishDate;
-	MetaDataPatient Patient;
-	String MedicalHistory;
-	String Examination;
-	MetaDataCasePic Pic;
-	MetaDataCasePresent Present;
+	Date PublishDate;
+	MetaDataCasePatient Patient;
+	MetaDataCaseMedicalHistory MedicalHistory;
+	MetaDataCaseDiagnosis exammination;
+	MetaDataCasePic Image;
+	MetaDataCasePresent Interpret;
 	public String getCreator() {
 		return Creator;
 	}
 	public void setCreator(String creator) {
 		Creator = creator;
 	}
-	public String getPublishDate() {
+	public Date getPublishDate() {
 		return PublishDate;
 	}
-	public void setPublishDate(String publishDate) {
+	public void setPublishDate(Date publishDate) {
 		PublishDate = publishDate;
 	}
-	public MetaDataPatient getPatient() {
+	public MetaDataCasePatient getPatient() {
 		return Patient;
 	}
-	public void setPatient(MetaDataPatient patient) {
+	public void setPatient(MetaDataCasePatient patient) {
 		Patient = patient;
 	}
-	public String getMedicalHistory() {
+	public MetaDataCaseMedicalHistory getMedicalHistory() {
 		return MedicalHistory;
 	}
-	public void setMedicalHistory(String medicalHistory) {
+	public void setMedicalHistory(MetaDataCaseMedicalHistory medicalHistory) {
 		MedicalHistory = medicalHistory;
 	}
-	public String getExamination() {
-		return Examination;
+	public MetaDataCaseDiagnosis getExammination() {
+		return exammination;
 	}
-	public void setExamination(String examination) {
-		Examination = examination;
+	public void setExammination(MetaDataCaseDiagnosis exammination) {
+		this.exammination = exammination;
 	}
-	public MetaDataCasePic getPic() {
-		return Pic;
+	public MetaDataCasePic getImage() {
+		return Image;
 	}
-	public void setPic(MetaDataCasePic pic) {
-		Pic = pic;
+	public void setImage(MetaDataCasePic image) {
+		Image = image;
 	}
-	public MetaDataCasePresent getPresent() {
-		return Present;
+	public MetaDataCasePresent getInterpret() {
+		return Interpret;
 	}
-	public void setPresent(MetaDataCasePresent present) {
-		Present = present;
+	public void setInterpret(MetaDataCasePresent interpret) {
+		Interpret = interpret;
+	}
+	@Override
+	public String toString() {
+		return "MetaDataCase [Creator=" + Creator + ", PublishDate="
+				+ PublishDate + ", Patient=" + Patient + ", MedicalHistory="
+				+ MedicalHistory + ", exammination=" + exammination
+				+ ", Image=" + Image + ", Interpret=" + Interpret + "]";
 	}
 	
 }

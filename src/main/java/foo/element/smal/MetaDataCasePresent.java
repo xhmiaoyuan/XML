@@ -2,33 +2,39 @@ package foo.element.smal;
 
 public class MetaDataCasePresent {
 
-	String text;
-	String audio;
-	String person;
-	String Company;
-	public String getText() {
-		return text;
+	String Interpret;
+	String Video;
+	String Person;
+	String Organization;
+	public String getInterpret() {
+		return Interpret;
 	}
-	public void setText(String text) {
-		this.text = text;
+	public void setInterpret(String interpret) {
+		Interpret = interpret;
 	}
-	public String getAudio() {
-		return audio;
+	public String getVideo() {
+		return Video;
 	}
-	public void setAudio(String audio) {
-		this.audio = audio;
+	public void setVideo(String video) {
+		Video = video;
 	}
 	public String getPerson() {
-		return person;
+		return Person;
 	}
 	public void setPerson(String person) {
-		this.person = person;
+		Person = person;
 	}
-	public String getCompany() {
-		return Company;
+	public String getOrganization() {
+		return Organization;
 	}
-	public void setCompany(String company) {
-		Company = company;
+	public void setOrganization(String organization) {
+		Organization = organization;
+	}
+	@Override
+	public String toString() {
+		return "MetaDataCasePresent [Interpret=" + Interpret + ", Video="
+				+ Video + ", Person=" + Person + ", Organization="
+				+ Organization + "]";
 	}
 	
 }

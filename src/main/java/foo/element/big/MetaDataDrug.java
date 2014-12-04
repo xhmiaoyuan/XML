@@ -3,7 +3,7 @@ package foo.element.big;
 
 public class MetaDataDrug extends MetaDataForAll{
 
-	String AnotherName;
+	String Alias;
 	String State;
 	String Toxicology;
 	String Pharmacokinetics;
@@ -16,8 +16,8 @@ public class MetaDataDrug extends MetaDataForAll{
 	String DrugOverdose;
 	String Storage;
 	String Packaging;
-	String PeriodValidity;
-	String Staple;
+	String PeriodValidation;
+	String Ingredients;
 	String Specification;
 	String Form;
 	String Classify;
@@ -29,17 +29,19 @@ public class MetaDataDrug extends MetaDataForAll{
 	
 	
 	
+	
+	
+	public String getAlias() {
+		return Alias;
+	}
+	public void setAlias(String alias) {
+		Alias = alias;
+	}
 	public String getDrugForPregnancy() {
 		return DrugForPregnancy;
 	}
 	public void setDrugForPregnancy(String drugForPregnancy) {
 		DrugForPregnancy = drugForPregnancy;
-	}
-	public String getAnotherName() {
-		return AnotherName;
-	}
-	public void setAnotherName(String anotherName) {
-		AnotherName = anotherName;
 	}
 	public String getState() {
 		return State;
@@ -107,17 +109,20 @@ public class MetaDataDrug extends MetaDataForAll{
 	public void setPackaging(String packaging) {
 		Packaging = packaging;
 	}
-	public String getPeriodValidity() {
-		return PeriodValidity;
+
+	public String getPeriodValidation() {
+		return PeriodValidation;
 	}
-	public void setPeriodValidity(String periodValidity) {
-		PeriodValidity = periodValidity;
+	public void setPeriodValidation(String periodValidation) {
+		PeriodValidation = periodValidation;
 	}
-	public String getStaple() {
-		return Staple;
+
+	
+	public String getIngredients() {
+		return Ingredients;
 	}
-	public void setStaple(String staple) {
-		Staple = staple;
+	public void setIngredients(String ingredients) {
+		Ingredients = ingredients;
 	}
 	public String getSpecification() {
 		return Specification;
@@ -169,7 +174,7 @@ public class MetaDataDrug extends MetaDataForAll{
 	}
 	@Override
 	public String toString() {
-		return "MetaDataDrug [AnotherName=" + AnotherName + ", State=" + State
+		return "MetaDataDrug [Alias=" + Alias + ", State=" + State
 				+ ", Toxicology=" + Toxicology + ", Pharmacokinetics="
 				+ Pharmacokinetics + ", Indication=" + Indication
 				+ ", Instruction=" + Instruction + ", UntowardEffect="
@@ -177,7 +182,7 @@ public class MetaDataDrug extends MetaDataForAll{
 				+ ", Matters=" + Matters + ", DrugInteraction="
 				+ DrugInteraction + ", DrugOverdose=" + DrugOverdose
 				+ ", Storage=" + Storage + ", Packaging=" + Packaging
-				+ ", PeriodValidity=" + PeriodValidity + ", Staple=" + Staple
+				+ ", PeriodValidation=" + PeriodValidation + ", Ingredients=" + Ingredients
 				+ ", Specification=" + Specification + ", Form=" + Form
 				+ ", Classify=" + Classify + ", DrugForPregnancy="
 				+ DrugForPregnancy + ", DrugForChildren=" + DrugForChildren
@@ -185,6 +190,7 @@ public class MetaDataDrug extends MetaDataForAll{
 				+ IsPrescription + ", MedicalInsuranceNumber="
 				+ MedicalInsuranceNumber + "]";
 	}
+
 	
 	
 }
