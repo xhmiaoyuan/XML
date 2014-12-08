@@ -7,20 +7,21 @@ import foo.element.big.MetaDataOperation;
  *
  */
 public class MetaDataForOperation extends MetaData {
-   MetaDataOperation metaDataOperation=new MetaDataOperation();
+   MetaDataOperation Operation=new MetaDataOperation();
 
-public MetaDataOperation getMetaDataOperation() {
-	return metaDataOperation;
+public MetaDataOperation getOperation() {
+	return Operation;
 }
 
-public void setMetaDataOperation(MetaDataOperation metaDataOperation) {
-	this.metaDataOperation = metaDataOperation;
+public void setOperation(MetaDataOperation operation) {
+	Operation = operation;
 }
 
 @Override
 public String toString() {
-	return "MetaDataForOperation [metaDataOperation=" + metaDataOperation + "]";
+	return "MetaDataForOperation [Operation=" + Operation + "]";
 }
-   
+
+ 
 	
 }

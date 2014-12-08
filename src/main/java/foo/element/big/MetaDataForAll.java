@@ -9,7 +9,6 @@ import foo.element.smal.ClassCode;
 public class MetaDataForAll {
 
 	String Title;
-	String EnTitle;
 	List<String> Synonyms=new ArrayList<String>();
 	String Abstract;
 	List<ClassCode> ClassCode=new ArrayList<ClassCode>();
@@ -26,14 +25,8 @@ public class MetaDataForAll {
 	public String getTitle() {
 		return Title;
 	}
-	public void setTitle(String title) {
-		Title = title;
-	}
-	public String getEnTitle() {
-		return EnTitle;
-	}
-	public void setEnTitle(String enTitle) {
-		EnTitle = enTitle;
+	public void setTitle(String Title) {
+		Title = Title;
 	}
 	public String getAbstract() {
 		return Abstract;
@@ -61,10 +54,9 @@ public class MetaDataForAll {
 	}
 	@Override
 	public String toString() {
-		return "MetaDataForAll [Title=" + Title + ", EnTitle=" + EnTitle
-				+ ", Synonyms=" + Synonyms + ", Abstract=" + Abstract
-				+ ", ClassCode=" + ClassCode + ", Tag=" + Tag + ", Notes="
-				+ Notes + "]";
+		return "MetaDataForAll [EnTitle=" + Title + ", Synonyms=" + Synonyms
+				+ ", Abstract=" + Abstract + ", ClassCode=" + ClassCode
+				+ ", Tag=" + Tag + ", Notes=" + Notes + "]";
 	}
 	
 	

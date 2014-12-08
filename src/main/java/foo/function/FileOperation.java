@@ -10,28 +10,83 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import foo.LoadProperty;
+import foo.ValueClass;
+import foo.element.smal.MetaDataRelationFile;
+import foo.model.MetaData;
+import foo.model.MetaDataForCase;
+import foo.model.MetaDataForDisease;
+import foo.model.MetaDataForDrug;
+import foo.model.MetaDataForExamination;
+import foo.model.MetaDataForOperation;
 
 public class FileOperation {
 
+	private LoadProperty properties=new LoadProperty();
 
-	public void pastFile(List<String> fileList,String nameIdentifier,String Goal){
+	public Map<String,String> pastFile(List<String> fileList,String nameIdentifier){
+		LoadProperty properties=new LoadProperty();
+		String Goal=properties.GetP(ValueClass.TARGETPATH);
 		String letter1=GetFirstLetter.getFirstLetter(nameIdentifier.charAt(0)).toString();
-//		String letter2=GetFirstLetter.getFirstLetter(nameIdentifier.substring(1, nameIdentifier.length()-1));
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 		Calendar calendar=Calendar.getInstance();
 		String data=sdf.format(calendar.getTime());
+		Map<String,String> mapPath=new HashMap<String,String>();
 		for(String filep:fileList){
 			String originFile=filep;
-			String goalFile=Goal+'\\'+data+'\\'+letter1+'\\'+nameIdentifier+'\\'+filep.substring(filep.lastIndexOf("\\"),filep.length());
+			String name=filep.substring(filep.lastIndexOf("\\"),filep.length());
+			String goalFile=Goal+'\\'+data+'\\'+letter1+'\\'+nameIdentifier+'\\'+name;
 			File goalFileDirectory=new File(Goal+'\\'+data+'\\'+letter1+'\\'+nameIdentifier);
 			if(!goalFileDirectory.exists()){
 				goalFileDirectory.mkdirs();
 			}
+			mapPath.put(name, goalFile);
 			
 			copy(originFile,goalFile);
 			
 		}
+		return mapPath;
+	}
+	
+	public Map<String,String> MoveFile(MetaData metadata){
+		List<String> listString=getFilePath(metadata);
+		String name=null;
+		if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.DISEASE)){
+			MetaDataForDisease disease=(MetaDataForDisease)metadata;
+			 name=disease.getDisease().getTitle() +disease.getHeader().getIdentifier();				
+		}else if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.CASE)){
+			MetaDataForCase diseasecase=(MetaDataForCase) metadata;
+			name=diseasecase.getDiseasecase().getTitle()+diseasecase.getHeader().getIdentifier();
+		}else if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.DRUG)){
+			MetaDataForDrug drug=(MetaDataForDrug)metadata;
+			name=drug.getDrug().getTitle()+drug.getHeader().getIdentifier();
+		}else if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.EXAMINATION)){
+			MetaDataForExamination examination=(MetaDataForExamination) metadata;
+			name=examination.getExamination().getTitle()+examination.getHeader().getIdentifier();
+		}else if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.OPERATION)){
+			MetaDataForOperation operation=(MetaDataForOperation) metadata;
+			name=operation.getOperation().getTitle()+operation.getHeader().getIdentifier();
+		}
+		return pastFile(listString,name);
+	
+	}
+	
+	
+	
+	private List<String> getFilePath(MetaData metadata){
+		System.out.println("获得xml文件图片地址");
+		List<MetaDataRelationFile> filePaths=metadata.getRelation().getFile();
+		List<String> listString=new ArrayList<String>();
+		for(MetaDataRelationFile f:filePaths){
+			listString.add(properties.GetP(ValueClass.XMLPATH)+"\\"+f.getFileName());
+		}
+		return listString; 
+		
+		
 	}
 	
     private void copy(String from, String to) {   
@@ -62,23 +117,14 @@ public class FileOperation {
 		List<String> fileList=new ArrayList<String>();
 		File root = new File(filePath);
 		File[] files = root.listFiles();
-		for (File file : files) {
-			
+		for (File file : files) {			
 			if (file.isDirectory()) {
-				/*
-				 * 递归调用
-				 */
 				this.getFiles(file.getAbsolutePath(),flge);
-				System.out.println("显示" + filePath + "下所有子目录及其文件"
-						+ file.getAbsolutePath());
 			} else {
-				if (file.getName().contains(flge)) {
+				if (file.getName().endsWith(flge)) {
 					fileList.add(file.getAbsolutePath());
-					System.out.println("显示" + filePath + "下所有子目录及其文件"
-							+ file.getAbsolutePath());
 				}
-				System.out.println("显示" + filePath + "下所有子目录"
-						+ file.getAbsolutePath());
+
 			}
 		}
 		return fileList;
@@ -90,10 +136,9 @@ public class FileOperation {
 		
 		
 		String filePath="E:\\BaiduYunDownload\\work2\\demo";
-		String targetPath="F:\\target";
 		String diseases="克罗恩病NNKMNmDM";
 		FileOperation file=new FileOperation();
-		file.pastFile(file.getFiles(filePath,".xml"), diseases, targetPath);		
+		file.pastFile(file.getFiles(filePath,".xml"), diseases);		
 	}
 	
 }

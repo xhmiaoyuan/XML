@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 
@@ -43,6 +44,8 @@ import foo.function.FileOperation;
 import foo.model.MetaData;
 import foo.model.MetaDataForCase;
 import foo.model.MetaDataForDisease;
+import foo.model.MetaDataForDrug;
+import foo.model.MetaDataForExamination;
 import foo.model.MetaDataForOperation;
 import foo.model.MetaDataForSymptom;
 import foo.mongoDBModel.ModelForMongoDB;
@@ -57,26 +60,20 @@ public class DOMXml {
 	
 	public static void main(String[] args) throws Exception {
 		DOMXml domxml = new DOMXml();
+		LoadProperty properties=new LoadProperty();
 		List<MetaData> listMetaData=new ArrayList<MetaData>();
-		String pathDirectory="E:\\BaiduYunDownload\\work2\\demo";
-		listMetaData =domxml.processXML(pathDirectory);
+		listMetaData =domxml.processXML(properties.GetP(ValueClass.XMLPATH));
 		for(MetaData meta:listMetaData){
-			List<String> listString=domxml.getFilePath(meta);
-			FileOperation fileOperation=new FileOperation();
-			if(meta.getHeader().getMetaDataID().equals(ValueClass.DISEASE)){
-				MetaDataForDisease me=(MetaDataForDisease) meta;
-				PushDataToSolr solr=new PushDataToSolr("E:\\solr_home\\collection1\\data\\index");
-				solr.convertDataToSolr(me);
-
-				MetaDataToMongoDBModel metadata=new MetaDataToMongoDBModel();
-				ModelForMongoDB mongDBModel=metadata.convertMetaData(me);
+				PushDataToSolr solr=new PushDataToSolr(properties.GetP(ValueClass.LUCENEPATH));
+				solr.convertDataToSolr(meta);
+				FileOperation fileOperation=new FileOperation();
+				Map<String,String> mapPath=fileOperation.MoveFile(meta);
+				MetaDataToMongoDBModel metadata=new MetaDataToMongoDBModel(mapPath);
+				ModelForMongoDB mongDBModel=metadata.convertMetaData(meta);
 				PushDataToMongoDB mongoDB=new PushDataToMongoDB();
-
 				mongoDB.insertData(mongDBModel);
-//				
-				fileOperation.pastFile(listString,me.getDisease().getTitle()+me.getHeader().getIdentifier(), "F:\\");
-			}
-			
+
+	
 		}
 
 	}
@@ -88,6 +85,7 @@ public class DOMXml {
 		FileOperation fileOperation=new FileOperation();
 		String flge=".xml";
 		List<String> listfile=fileOperation.getFiles(pathDirectory, flge);
+		System.out.println("一个搜索到"+listfile.size()+"个文件");
 		for(String str:listfile){
 			MetaData metadata=initial(str);	
 			listMetaData2.add(metadata);			
@@ -96,17 +94,7 @@ public class DOMXml {
 		
 	}
 	
-	
-	private List<String> getFilePath(MetaData metadata){
-		List<MetaDataRelationFile> filePaths=metadata.getRelation().getFile();
-		List<String> listString=new ArrayList<String>();
-		for(MetaDataRelationFile f:filePaths){
-			listString.add(ValueClass.ABSOLUTIPATH+"\\"+f.getFileName());
-		}
-		return listString; 
-		
-		
-	}
+
 
 	private MetaData initial(String xmlpath) {
 		SAXReader reader = new SAXReader();
@@ -129,7 +117,6 @@ public class DOMXml {
 
 	private MetaData createCase(Element root) throws Exception {
 		List<Element> nodes = root.elements();
-
 		MetaData metadata = null;
 		MetaDataHeader mdh = null;
 		MetaDataForAll metaDataForall = null;
@@ -139,7 +126,7 @@ public class DOMXml {
 		for (Element child : nodes) {
 			if (child.getName().equals(ValueClass.HEADER)) {
 				 mdh = addXMLHeader(child);
-				System.out.println(mdh.getMetaDataID());
+				System.out.println("xml文件种类为"+mdh.getMetaDataID());
 				type = mdh.getMetaDataID();
 			} else if (child.getName().equals(ValueClass.METADATA)) {
 				if (type.equals(ValueClass.DISEASE)) {
@@ -181,21 +168,64 @@ public class DOMXml {
 			} else if (child.getName().equals(ValueClass.ADMINMD)) {
 				adminMD=addXMLAdminMD(child);
 			}
-			System.out.println(child.getName());
 		}
-		if(type.equals("am_disease")){
+
+		return getMetaData(metadata,mdh,metaDataForall,relation,adminMD);
+	}
+	
+	
+	private MetaData getMetaData(MetaData metadata,MetaDataHeader mdh,MetaDataForAll metaDataForall,MetaDataRelations relation,MetaDataAdminMD adminMD){
+		String type=mdh.getMetaDataID();
+		if(type.equals(ValueClass.DISEASE)){
 			MetaDataForDisease disease=(MetaDataForDisease)metadata;
 			disease.setAdminMD(adminMD);
 			disease.setDisease((MetaDataDisease)metaDataForall);
 			disease.setHeader(mdh);
 			disease.setRelation(relation);
 			return disease;
+		}else if(type.equals(ValueClass.SYMPTOM)){
+			MetaDataForSymptom symptom=(MetaDataForSymptom)metadata;
+			symptom.setAdminMD(adminMD);
+			symptom.setSymptom((MetaDataSymptom)metaDataForall);
+			symptom.setHeader(mdh);
+			symptom.setRelation(relation);
+			return symptom;			
+		}else if(type.equals(ValueClass.EXAMINATION)){
+			MetaDataForExamination examination=(MetaDataForExamination)metadata;
+			examination.setAdminMD(adminMD);
+			examination.setExamination((MetaDataExamination)metaDataForall);
+			examination.setHeader(mdh);
+			examination.setRelation(relation);
+			return examination;	
+		}else if(type.equals(ValueClass.OPERATION)){
+			MetaDataForOperation operation=new MetaDataForOperation();
+			operation.setAdminMD(adminMD);
+			operation.setHeader(mdh);
+			operation.setOperation((MetaDataOperation)metaDataForall);
+			operation.setRelation(relation);
+			return operation;
+		}else if(type.equals(ValueClass.DRUG)){
+			MetaDataForDrug drug=new MetaDataForDrug();
+			drug.setAdminMD(adminMD);
+			drug.setHeader(mdh);
+			drug.setRelation(relation);
+			drug.setDrug((MetaDataDrug)metaDataForall);
+			return drug;
 		}
-		else if(type.equals("am_case")){
-			
+		else if(type.equals(ValueClass.CASE)){
+			MetaDataForCase diseasecase=new MetaDataForCase();
+			diseasecase.setAdminMD(adminMD);
+			diseasecase.setHeader(mdh);
+			diseasecase.setRelation(relation);
+			diseasecase.setDiseasecase((MetaDataCase)metaDataForall);
+			return diseasecase;
 		}
+		else{
+			return null;
+		}
+		
 
-		return null;
+		
 	}
 
 	private MetaDataCase addXMLMetaDataCase(MetaDataCase metaDatacase, Element child) throws ParseException {
@@ -392,7 +422,6 @@ public class DOMXml {
 				metaDataSymptom.setTherapy(el.getText());
 			} 
 		}
-		System.out.println(metaDataSymptom.toString());
 		return metaDataSymptom;
 	}
 
@@ -422,8 +451,6 @@ public class DOMXml {
 		MetaDataAdminMD adminMD = new MetaDataAdminMD();
 		List<Element> listelem = child.elements();
 		for (Element ele : listelem) {
-
-			System.out.println(ele.getName());
 			if (ele.getName().equals("CopyRightsDesc")) {
 				MetaDataEvidenceCopyRightDesc copy = new MetaDataEvidenceCopyRightDesc();
 				copy.setContext(ele.getText());
@@ -437,7 +464,6 @@ public class DOMXml {
 			}
 
 		}
-		System.out.println(adminMD.toString());
 		return adminMD;
 
 	}
@@ -518,8 +544,6 @@ public class DOMXml {
 							sentence.setSentenceClass(ele.getText());
 						} else if (ele.getName().equals("Text")) {
 							sentence.setText(ele.getText());
-						} else {
-							System.out.println("UNKNOW TYPE:" + ele.getName());
 						}
 
 					}
@@ -541,7 +565,6 @@ public class DOMXml {
 			}
 
 		}
-		System.out.println(relation.toString());
 		return relation;
 
 	}
@@ -559,7 +582,6 @@ public class DOMXml {
 		header.setMetaDataVersion(metaType.attributeValue("Version"));
 		Element IDtype = e.element("identifier");
 		header.setIdentifierIDType(IDtype.attributeValue("IDType"));
-		System.out.println(header.toString());
 		return header;
 
 	}
@@ -582,11 +604,8 @@ public class DOMXml {
 				metaDisease.setPrognosis(el.getText());
 			} else if (el.getName().equals("Notes")) {
 				metaDisease.getNotes().add(el.getText());
-			} else {
-				System.out.println("UNKNOW TYPE:" + el.getName());
 			}
 		}
-		System.out.println(metaDisease.toString());
 		return metaDisease;
 	}
 }

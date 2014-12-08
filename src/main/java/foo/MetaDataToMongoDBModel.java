@@ -2,32 +2,112 @@ package foo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 
 import com.mongodb.BasicDBObject;
 
 import foo.element.smal.ClassCode;
+import foo.element.smal.MateDataRelationSentence;
+import foo.element.smal.MetaDataRelationFile;
 import foo.model.MetaData;
 import foo.model.MetaDataForCase;
 import foo.model.MetaDataForDisease;
+import foo.mongoDBModel.Image;
 import foo.mongoDBModel.ModelForMongoDB;
 import foo.mongoDBModel.Predication;
+import foo.mongoDBModel.Sentence;
+import foo.mongoDBModel.Tag;
 
 public class MetaDataToMongoDBModel {
-
+	private LoadProperty property=new LoadProperty();
+	private Map<String,String> mapPath;
 	
+	MetaDataToMongoDBModel(Map<String,String> mapPath){
+		this.mapPath=mapPath;
+	}
+	
+	
+
+
 	public ModelForMongoDB convertMetaData(MetaData metadata ){
 		ModelForMongoDB mode=new ModelForMongoDB();
-		if(metadata.getHeader().getMetaDataID().equals(ValueClass.DISEASE)){
+
+		if(property.getCollection(ValueClass.CDISEASE)&&metadata.getHeader().getMetaDataID().equals(ValueClass.DISEASE)){
 			MetaDataForDisease disease=(MetaDataForDisease)metadata;
 			mode.setSubjectumId(disease.getHeader().getIdentifier());
-			mode.setName(disease.getDisease().getEnTitle());
+			mode.setName(disease.getDisease().getTitle());
 			mode.setPredicateList(addPredicationForDisease(disease));
+			List<Tag> taglist=new ArrayList<Tag>();
+			Tag tag=new Tag();
+			tag.setPredicate("标签");
+			tag.setTagList(disease.getDisease().getTag());
+			taglist.add(tag);
+			mode.setTagList(taglist);
 		}
 		
 		
+	
 		return mode;
+		
+	}
+	
+	
+	/**
+	 * 给定一个metadata返回句子数组
+	 * @param metadata
+	 * @return
+	 */
+	public List<Sentence> convertSentence(MetaData metadata ){
+		List<Sentence> sentenceList=new ArrayList<Sentence>();
+		for(MateDataRelationSentence metaSen:metadata.getRelation().getSentences()){
+		Sentence sentence=new Sentence();
+		sentence.setChapteName(metaSen.getBookTitle());
+		sentence.setContent(metaSen.getText());
+		sentence.setEbookpageNum(metaSen.getPage());
+		sentence.setObjectid(metaSen.getObjID());
+		sentence.setMetaid(metaSen.getMetaID());
+		//sentence.setRelationnum(metaSen.get);
+		sentenceList.add(sentence);
+		}
+		return sentenceList;
+	}
+	/**
+	 * 给定一个metadata返回
+	 * @param metadata
+	 * @return
+	 */
+	public List<Image> convertImage(MetaData metadata){
+		LoadProperty properties=new LoadProperty();
+		List<Image> imageList=new ArrayList<Image>();
+		for(MetaDataRelationFile file:metadata.getRelation().getFile()){
+			if(file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_IMAGE)||
+					file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_IMAGE2)||
+							file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_IMAGE3)||
+							file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_IMAGE4)){
+				 Image image =new Image();
+				 image.setImagePath(mapPath.get(file.getFileName()));
+				 image.setImageDetail(file.getFileDesc());
+				 image.setName(file.getFileName());
+				 imageList.add(image);
+			}
+		}
+		return null;
+		
+	}
+	
+	
+	
+	
+	
+	private List<InstanceForSentences> addInstanceForSentence(MetaData metadata){
+		List <InstanceForSentences> listInstance=new ArrayList<InstanceForSentences>();
+		for(MateDataRelationSentence sentence:metadata.getRelation().getSentences()){
+			sentence.get
+		}
+		
+		return null;
 		
 	}
 	
@@ -96,8 +176,6 @@ public class MetaDataToMongoDBModel {
 				listpredication.add(pre1);				
 			}			
 		}
-		JSONArray jsonArray = JSONArray.fromObject(listpredication); 
-		System.out.println(jsonArray);
 		return listpredication;
 		
 	}
