@@ -7,6 +7,7 @@ public class MetaDataRelationEvidenceItem {
 	String Source;
 	String url;
 	String context;
+	String title;
 	public String getCreator() {
 		return Creator;
 	}
@@ -37,13 +38,14 @@ public class MetaDataRelationEvidenceItem {
 	public void setContext(String context) {
 		this.context = context;
 	}
-	@Override
-	public String toString() {
-		return "MetaDataRelationEvidenceItem [Creator=" + Creator
-				+ ", Eabstract=" + Eabstract + ", Source=" + Source + ", url="
-				+ url + ", context=" + context + "]";
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
+	
 	
 	
 	

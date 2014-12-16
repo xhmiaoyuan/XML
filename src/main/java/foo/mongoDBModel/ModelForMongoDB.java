@@ -11,6 +11,9 @@ public class ModelForMongoDB {
 	private List<Image> imageList= new ArrayList<Image>();
 	private List<Tag> tagList=new ArrayList<Tag>();
 	private List<Sentence> sentenceList=new ArrayList<Sentence>();
+	private List<Route> routeList=new ArrayList<Route>();
+	private List<Video> videoList=new ArrayList<Video>();
+	private List<Evidence> evidenceList=new ArrayList<Evidence>();
 	public String getSubjectumId() {
 		return subjectumId;
 	}
@@ -47,14 +50,26 @@ public class ModelForMongoDB {
 	public void setSentenceList(List<Sentence> sentenceList) {
 		this.sentenceList = sentenceList;
 	}
-	@Override
-	public String toString() {
-		return "ModelForMongoDB [subjectumId=" + subjectumId + ", name=" + name
-				+ ", predicateList=" + predicateList + ", imageList="
-				+ imageList + ", tagList=" + tagList + ", sentenceList="
-				+ sentenceList + "]";
+	public List<Video> getVideoList() {
+		return videoList;
+	}
+	public void setVideoList(List<Video> videoList) {
+		this.videoList = videoList;
+	}
+	public List<Route> getRouteList() {
+		return routeList;
+	}
+	public void setRouteList(List<Route> routeList) {
+		this.routeList = routeList;
+	}
+	public List<Evidence> getEvidenceList() {
+		return evidenceList;
+	}
+	public void setEvidenceList(List<Evidence> evidenceList) {
+		this.evidenceList = evidenceList;
 	}
 	
+
 	
 	
 	

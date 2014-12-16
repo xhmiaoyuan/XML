@@ -63,8 +63,8 @@ public class DOMXml {
 		LoadProperty properties=new LoadProperty();
 		List<MetaData> listMetaData=new ArrayList<MetaData>();
 		listMetaData =domxml.processXML(properties.GetP(ValueClass.XMLPATH));
+		PushDataToSolr solr=new PushDataToSolr(properties.GetP(ValueClass.LUCENEPATH));
 		for(MetaData meta:listMetaData){
-				PushDataToSolr solr=new PushDataToSolr(properties.GetP(ValueClass.LUCENEPATH));
 				solr.convertDataToSolr(meta);
 				FileOperation fileOperation=new FileOperation();
 				Map<String,String> mapPath=fileOperation.MoveFile(meta);
@@ -75,6 +75,7 @@ public class DOMXml {
 
 	
 		}
+		solr.closeSolr();
 
 	}
 	
@@ -430,6 +431,7 @@ public class DOMXml {
 		List<Element> elements = e.elements();
 		for (Element el : elements) {
 			if (el.getName().equals("Title")) {
+				System.out.println(el.getText());
 				metadataForAll.setTitle(el.getText());
 			} else if (el.getName().equals("Abstract")) {
 				metadataForAll.setAbstract(el.getText());
@@ -493,7 +495,6 @@ public class DOMXml {
 				for (Element el : strs) {
 					MetaDataRelationFile file = new MetaDataRelationFile();
 					file.setOrder(Integer.parseInt(el.attributeValue("Order")));
-					file.setFileDesc(el.attributeValue("FileDesc"));
 					file.setFilePath(el.attributeValue("FilePath"));
 					file.setFileName(el.attributeValue("FileName"));
 					List<Element> listid = el.elements();
@@ -544,6 +545,8 @@ public class DOMXml {
 							sentence.setSentenceClass(ele.getText());
 						} else if (ele.getName().equals("Text")) {
 							sentence.setText(ele.getText());
+						}else if(ele.getName().equals("Publisher")){
+							sentence.setPublisher(ele.getText());
 						}
 
 					}
@@ -559,6 +562,7 @@ public class DOMXml {
 					evidenceitem.setSource(el.attributeValue("source"));
 					evidenceitem.setUrl(el.attributeValue("url"));
 					evidenceitem.setEabstract(el.attributeValue("eabstract"));
+					evidenceitem.setTitle(el.attributeValue("title"));
 					evidenceitem.setContext(el.getText());
 					relation.getEvidenceItems().add(evidenceitem);
 				}

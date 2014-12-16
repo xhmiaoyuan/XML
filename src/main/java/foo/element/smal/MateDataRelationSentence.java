@@ -12,6 +12,7 @@ public class MateDataRelationSentence {
 	String BookTitle;
 	String MetaID;
 	String ObjID;
+	String publisher;
 	public String getText() {
 		return Text;
 	}
@@ -54,13 +55,13 @@ public class MateDataRelationSentence {
 	public void setObjID(String objID) {
 		ObjID = objID;
 	}
-	@Override
-	public String toString() {
-		return "MateDataRelationSentence [Text=" + Text + ", SentenceClass="
-				+ SentenceClass + ", Tags=" + Tags + ", Page=" + Page
-				+ ", BookTitle=" + BookTitle + ", MetaID=" + MetaID
-				+ ", ObjID=" + ObjID + "]";
+	public String getPublisher() {
+		return publisher;
 	}
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+	
 	
 	
 }

@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONArray;
-
-import com.mongodb.BasicDBObject;
 
 import foo.element.smal.ClassCode;
 import foo.element.smal.MateDataRelationSentence;
+import foo.element.smal.MetaDataRelationEvidenceItem;
 import foo.element.smal.MetaDataRelationFile;
 import foo.model.MetaData;
-import foo.model.MetaDataForCase;
 import foo.model.MetaDataForDisease;
+import foo.mongoDBModel.Evidence;
 import foo.mongoDBModel.Image;
 import foo.mongoDBModel.ModelForMongoDB;
 import foo.mongoDBModel.Predication;
+import foo.mongoDBModel.Route;
 import foo.mongoDBModel.Sentence;
 import foo.mongoDBModel.Tag;
+import foo.mongoDBModel.Video;
 
 public class MetaDataToMongoDBModel {
 	private LoadProperty property=new LoadProperty();
@@ -45,10 +45,12 @@ public class MetaDataToMongoDBModel {
 			tag.setTagList(disease.getDisease().getTag());
 			taglist.add(tag);
 			mode.setTagList(taglist);
-		}
-		
-		
-	
+			mode.setImageList(convertImage(metadata));
+			mode.setSentenceList(convertSentence(metadata));
+			mode.setVideoList(convertVideo(metadata));
+			mode.setEvidenceList(convertEvidence(metadata));
+			mode.setRouteList(convertRoute(metadata));
+		}	
 		return mode;
 		
 	}
@@ -63,11 +65,12 @@ public class MetaDataToMongoDBModel {
 		List<Sentence> sentenceList=new ArrayList<Sentence>();
 		for(MateDataRelationSentence metaSen:metadata.getRelation().getSentences()){
 		Sentence sentence=new Sentence();
-		sentence.setChapteName(metaSen.getBookTitle());
+		sentence.setTitle(metaSen.getBookTitle());
 		sentence.setContent(metaSen.getText());
 		sentence.setEbookpageNum(metaSen.getPage());
 		sentence.setObjectid(metaSen.getObjID());
 		sentence.setMetaid(metaSen.getMetaID());
+		sentence.setPublisher(metaSen.getPublisher());
 		//sentence.setRelationnum(metaSen.get);
 		sentenceList.add(sentence);
 		}
@@ -79,7 +82,6 @@ public class MetaDataToMongoDBModel {
 	 * @return
 	 */
 	public List<Image> convertImage(MetaData metadata){
-		LoadProperty properties=new LoadProperty();
 		List<Image> imageList=new ArrayList<Image>();
 		for(MetaDataRelationFile file:metadata.getRelation().getFile()){
 			if(file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_IMAGE)||
@@ -88,28 +90,66 @@ public class MetaDataToMongoDBModel {
 							file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_IMAGE4)){
 				 Image image =new Image();
 				 image.setImagePath(mapPath.get(file.getFileName()));
-				 image.setImageDetail(file.getFileDesc());
-				 image.setName(file.getFileName());
+				 image.setImageDetail(file.getTechMD().getFileDesc());
+				 image.setName(file.getId().getObjID());
 				 imageList.add(image);
 			}
 		}
-		return null;
+		return imageList;
 		
 	}
-	
-	
-	
-	
-	
-	private List<InstanceForSentences> addInstanceForSentence(MetaData metadata){
-		List <InstanceForSentences> listInstance=new ArrayList<InstanceForSentences>();
-		for(MateDataRelationSentence sentence:metadata.getRelation().getSentences()){
-			sentence.get
+	public List<Route> convertRoute(MetaData metadata){
+		List<Route> routeList=new ArrayList<Route>();
+		for(MetaDataRelationFile file:metadata.getRelation().getFile()){
+			if(file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_DOCUMENT)||
+					file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_DOCUMENT2)){
+				 Route route =new Route();
+				 route.setName(file.getId().getObjID());
+				 route.setPath(mapPath.get(file.getFileName()));
+				 route.setValue(file.getTechMD().getFileDesc());
+				 routeList.add(route);
+			}
 		}
 		
-		return null;
+		return routeList;
 		
 	}
+	
+	public List<Video> convertVideo(MetaData metadata){
+		List<Video> videoList=new ArrayList<Video>();
+		for(MetaDataRelationFile file:metadata.getRelation().getFile()){
+			if(file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_VIDEO)||
+					file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_VIDEO2)||
+							file.getTechMD().getFormat().equalsIgnoreCase(ValueClass.FORMAT_VIDEO3)){
+				 Video video =new Video();
+				 video.setName(file.getId().getObjID());
+				 video.setDescription(file.getTechMD().getFileDesc());
+				 video.setPath(mapPath.get(file.getFileName()));
+				// video.setPicturepath(mapPath.get(file.getFileName()));
+				 videoList.add(video);
+
+			}
+		}
+		return videoList;
+	}
+	
+	public List<Evidence> convertEvidence(MetaData metadata){
+		List<Evidence> evidenceList=new ArrayList<Evidence>();
+		for(MetaDataRelationEvidenceItem evi:metadata.getRelation().getEvidenceItems()){
+			Evidence evidence=new Evidence();
+			evidence.setContent(evi.getContext());
+			evidence.setCreateor(evi.getCreator());
+			evidence.setSource(evi.getSource());
+			evidence.setURL(evi.getUrl());
+			evidence.setTitle(evi.getTitle());
+			evidenceList.add(evidence);
+
+		}
+		return evidenceList;
+		
+	}
+	
+	
 	
 	
 	private List<Predication> addPredicationForDisease(MetaDataForDisease disease){
@@ -176,8 +216,7 @@ public class MetaDataToMongoDBModel {
 				listpredication.add(pre1);				
 			}			
 		}
-		return listpredication;
-		
+		return listpredication;		
 	}
 	public static void main(String[] args) {
 		

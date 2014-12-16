@@ -31,6 +31,7 @@ public class FileOperation {
 	public Map<String,String> pastFile(List<String> fileList,String nameIdentifier){
 		LoadProperty properties=new LoadProperty();
 		String Goal=properties.GetP(ValueClass.TARGETPATH);
+		System.out.println(nameIdentifier);
 		String letter1=GetFirstLetter.getFirstLetter(nameIdentifier.charAt(0)).toString();
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 		Calendar calendar=Calendar.getInstance();
@@ -39,12 +40,12 @@ public class FileOperation {
 		for(String filep:fileList){
 			String originFile=filep;
 			String name=filep.substring(filep.lastIndexOf("\\"),filep.length());
-			String goalFile=Goal+'\\'+data+'\\'+letter1+'\\'+nameIdentifier+'\\'+name;
+			String goalFile=Goal+'\\'+data+'\\'+letter1+'\\'+nameIdentifier+name;
 			File goalFileDirectory=new File(Goal+'\\'+data+'\\'+letter1+'\\'+nameIdentifier);
 			if(!goalFileDirectory.exists()){
 				goalFileDirectory.mkdirs();
 			}
-			mapPath.put(name, goalFile);
+			mapPath.put(name.substring(1,name.length()), goalFile);
 			
 			copy(originFile,goalFile);
 			
@@ -55,19 +56,19 @@ public class FileOperation {
 	public Map<String,String> MoveFile(MetaData metadata){
 		List<String> listString=getFilePath(metadata);
 		String name=null;
-		if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.DISEASE)){
+		if(metadata.getHeader().getMetaDataID().equals(ValueClass.DISEASE)){
 			MetaDataForDisease disease=(MetaDataForDisease)metadata;
 			 name=disease.getDisease().getTitle() +disease.getHeader().getIdentifier();				
-		}else if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.CASE)){
+		}else if(metadata.getHeader().getMetaDataID().equals(ValueClass.CASE)){
 			MetaDataForCase diseasecase=(MetaDataForCase) metadata;
 			name=diseasecase.getDiseasecase().getTitle()+diseasecase.getHeader().getIdentifier();
-		}else if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.DRUG)){
+		}else if(metadata.getHeader().getMetaDataID().equals(ValueClass.DRUG)){
 			MetaDataForDrug drug=(MetaDataForDrug)metadata;
 			name=drug.getDrug().getTitle()+drug.getHeader().getIdentifier();
-		}else if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.EXAMINATION)){
+		}else if(metadata.getHeader().getMetaDataID().equals(ValueClass.EXAMINATION)){
 			MetaDataForExamination examination=(MetaDataForExamination) metadata;
 			name=examination.getExamination().getTitle()+examination.getHeader().getIdentifier();
-		}else if(metadata.getHeader().getIdentifierIDType().equals(ValueClass.OPERATION)){
+		}else if(metadata.getHeader().getMetaDataID().equals(ValueClass.OPERATION)){
 			MetaDataForOperation operation=(MetaDataForOperation) metadata;
 			name=operation.getOperation().getTitle()+operation.getHeader().getIdentifier();
 		}

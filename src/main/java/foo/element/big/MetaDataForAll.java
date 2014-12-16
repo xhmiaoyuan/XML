@@ -2,7 +2,6 @@ package foo.element.big;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import foo.element.smal.ClassCode;
 
@@ -25,8 +24,8 @@ public class MetaDataForAll {
 	public String getTitle() {
 		return Title;
 	}
-	public void setTitle(String Title) {
-		Title = Title;
+	public void setTitle(String title) {
+		Title = title;
 	}
 	public String getAbstract() {
 		return Abstract;
