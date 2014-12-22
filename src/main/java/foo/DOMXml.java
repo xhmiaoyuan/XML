@@ -50,6 +50,10 @@ import foo.model.MetaDataForOperation;
 import foo.model.MetaDataForSymptom;
 import foo.mongoDBModel.ModelForMongoDB;
 
+/**
+ * @author miaoyuan
+ *
+ */
 public class DOMXml {
 
 	
@@ -81,6 +85,11 @@ public class DOMXml {
 	
 	
 	
+	
+	/**
+	 * @param pathDirectory
+	 * @return
+	 */
 	public List<MetaData> processXML(String pathDirectory){
 		List<MetaData> listMetaData2=new ArrayList<MetaData>();
 		FileOperation fileOperation=new FileOperation();
@@ -116,6 +125,11 @@ public class DOMXml {
 		return metadata;
 	}
 
+	/**
+	 * @param root
+	 * @return
+	 * @throws Exception
+	 */
 	private MetaData createCase(Element root) throws Exception {
 		List<Element> nodes = root.elements();
 		MetaData metadata = null;
@@ -406,7 +420,6 @@ public class DOMXml {
 			} 
 		}
 		return metaDataOperation;
-
 		
 	}
 
