@@ -17,6 +17,9 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
+import org.wltea.analyzer.lucene.IKAnalyzerWithSmart;
+
+import foo.PushDataToSolr;
 
 public class CreateIndex {
 	public static boolean createDocumentIndex() {
@@ -26,6 +29,9 @@ public class CreateIndex {
 		// 索引文件存放的目录文件夹
 		File path = new File("E:\\Index");
 		Directory indexpath=null;
+		IndexWriter indexWriter = null;
+		Analyzer luceneAnalyzer;
+		IKAnalyzerWithSmart ikAnalyzer=null;
 		try {
 			indexpath = FSDirectory.open(path);
 		} catch (IOException e1) {
@@ -33,15 +39,28 @@ public class CreateIndex {
 			e1.printStackTrace();
 		}
 
-		// 分词，分词有StandardAnalyzer和SimpleAnalyzer两种
-		// lucene是将一句句话，一段话Field，分成一个个词Term进行索引搜索的。
-		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_CURRENT);
-		IndexWriterConfig config=new IndexWriterConfig(Version.LUCENE_CURRENT,analyzer);
+		
+		
+
+		luceneAnalyzer = new StandardAnalyzer(Version.LUCENE_CURRENT);
+		ikAnalyzer=new IKAnalyzerWithSmart(true);
+		String filePath = PushDataToSolr.class.getResource("").getPath();
+		filePath = filePath.substring(0, filePath.indexOf("classes") + 7);
+		// "E:\\eclipseWorlk\\Java\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\founder.medical\\WEB-INF\\classes"
+		
+		ikAnalyzer.setConfigFilePath(filePath);
+
+		try {
+			indexWriter = new IndexWriter(indexpath, new IndexWriterConfig(
+					Version.LUCENE_CURRENT, ikAnalyzer));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			// 向E:\\Index保存建立的索引Index内容
 			// 用到IndexWriter类，这里需要传入的三个参数为：
 			// （索引目录文件夹，分词）
-			IndexWriter index = new IndexWriter(indexpath, config);
 			File[] txtfiles = dirpath.listFiles();
 			for (int i = 0; i < txtfiles.length; i++) {
 				if (txtfiles[i].isFile()
@@ -60,13 +79,13 @@ public class CreateIndex {
 					doc.add(new Field("path", txtfiles[i].getAbsolutePath(),
 							Field.Store.YES, Field.Index.NO));
 					// index加Document，索引创建成功
-					index.addDocument(doc);
+					indexWriter.addDocument(doc);
 				}
 			}
 			// 索引优化optimize()，合并磁盘上的索引文件，以便减少文件的数量，从而也减少搜索索引的时间
 			//index.optimize();
 			// 注意关闭IndexWriter，立即将索引文件写入到目录磁盘中，生成索引文件
-			index.close();
+			indexWriter.close();
 			long endTime = new Date().getTime();
 //			System.out.println("共花了" + (endTime - startTime) + "毫秒将文档增加到索引中"
 //					+ indexpath.);

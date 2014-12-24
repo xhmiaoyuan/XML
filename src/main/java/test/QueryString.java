@@ -20,7 +20,7 @@ public class QueryString {
 
 	public static void main(String[] args) throws CorruptIndexException, IOException {
 		//想搜索的词
-		String queryStr="name";
+		String queryStr="鬼婆";
 		//索引目录
 		File indexDir=new File("E:\\Index");
 		//创建directory，Index的映射地址，相当于电话本
